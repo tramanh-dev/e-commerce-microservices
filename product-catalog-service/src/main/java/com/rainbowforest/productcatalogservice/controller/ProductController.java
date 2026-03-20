@@ -101,8 +101,8 @@ public class ProductController {
     public ResponseEntity<Product> updateProduct(@PathVariable("id") long id, @RequestBody Product product) {
         Product existingProduct = productService.getProductById(id);
         if (existingProduct != null) {
-            product.setId(id); // Đảm bảo ghi đè đúng ID cần sửa
-            Product updated = productService.addProduct(product); // save() sẽ tự update nếu có ID
+            product.setId(id); 
+            Product updated = productService.addProduct(product);
             return new ResponseEntity<>(updated, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

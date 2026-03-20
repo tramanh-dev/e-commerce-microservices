@@ -25,13 +25,17 @@ public class Order {
     @Column (name = "total")
     private BigDecimal total;
 
-    @ManyToMany (cascade = CascadeType.ALL)
-    @JoinTable (name = "cart" , joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn (name = "item_id"))
-    private List<Item> items;
+    @ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+    name = "order_items",
+    joinColumns = @JoinColumn(name = "order_id"),
+    inverseJoinColumns = @JoinColumn(name = "item_id")
+)
+	private List<Item> items;
 
-    @ManyToOne (cascade = CascadeType.ALL)
-    @JoinColumn (name = "user_id")
-    private User user;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
     
 	public Order() {
 		
