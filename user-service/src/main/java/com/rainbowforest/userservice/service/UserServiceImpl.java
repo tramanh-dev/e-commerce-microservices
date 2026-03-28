@@ -37,8 +37,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveUser(User user) {
         user.setActive(1);
-        UserRole role = userRoleRepository.findUserRoleByRoleName("ROLE_USER");
-        user.setRole(role);
+        if (user.getRole() != null && user.getRole().getId() != null) {
+            UserRole existingRole = userRoleRepository.findById(user.getRole().getId()).orElse(null);
+            user.setRole(existingRole);
+        } else {
+            UserRole defaultRole = userRoleRepository.findUserRoleByRoleName("USER");
+            user.setRole(defaultRole);
+        }
+        System.out.println(
+                "Role dang luu la: " + (user.getRole() != null ? user.getRole().getRoleName() : "DANG BI NULL ROI!!!"));
         return userRepository.save(user);
     }
 }

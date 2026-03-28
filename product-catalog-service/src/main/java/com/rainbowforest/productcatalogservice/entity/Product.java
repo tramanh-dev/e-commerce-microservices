@@ -28,8 +28,8 @@ public class Product {
     @NotNull
     private BigDecimal price;
 
-    @Column (name = "discription") 
-    private String discription;
+    @Column (name = "description") 
+    private String description;
 
     @Column (name = "category")
     @NotNull
@@ -70,8 +70,8 @@ public class Product {
     public void setProductName(String productName) { this.productName = productName; }
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) { this.price = price; }
-    public String getDiscription() { return discription; }
-    public void setDiscription(String discription) { this.discription = discription; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
     

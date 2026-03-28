@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
+// @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 public class ProductController {
 
