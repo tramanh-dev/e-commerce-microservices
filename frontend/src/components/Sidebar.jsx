@@ -44,6 +44,13 @@ const Sidebar = ({ setView, currentView, isCollapsed, setIsCollapsed }) => {
                     </li>
                 ))}
             </ul>
+            <div
+                className={`menu-item ${currentView === 'clients' ? 'active' : ''}`}
+                onClick={() => setView('clients')}
+                style={{ cursor: 'pointer', padding: '10px', color: 'blue', fontWeight: 'bold' }}
+            >
+                🌐 Website
+            </div>
         </div>
     );
 };

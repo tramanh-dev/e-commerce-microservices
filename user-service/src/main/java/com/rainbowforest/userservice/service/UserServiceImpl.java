@@ -48,4 +48,27 @@ public class UserServiceImpl implements UserService {
                 "Role dang luu la: " + (user.getRole() != null ? user.getRole().getRoleName() : "DANG BI NULL ROI!!!"));
         return userRepository.save(user);
     }
+
+    @Override
+    public User updateUser(Long id, User userDetails) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setUserName(userDetails.getUserName());
+        user.setActive(userDetails.getActive());
+
+        if (userDetails.getRole() != null) {
+            user.setRole(userDetails.getRole());
+        }
+        if (userDetails.getUserPassword() != null && !userDetails.getUserPassword().isEmpty()) {
+            user.setUserPassword(userDetails.getUserPassword());
+        }
+
+        return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
 }

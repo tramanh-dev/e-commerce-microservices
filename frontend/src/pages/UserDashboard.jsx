@@ -1,22 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const UserDashboard = () => {
+const UserDashboard = ({ setView, setUserEditingId }) => {
     const [users, setUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
-    useEffect(() => {
-        fetchUsers();
-    }, []);
+    useEffect(() => { fetchUsers(); }, [])
 
     const fetchUsers = () => {
         axios.get('http://localhost:8900/api/accounts/users')
             .then(res => setUsers(res.data))
             .catch(err => console.error(err));
     };
-
+    const handleDelete = async (id, name) => {
+        if (window.confirm(`Chắc chắn muốn xóa user [${name}] không?`)) {
+            try {
+                await axios.delete(`http://localhost:8900/api/accounts/users/${id}`);
+                alert("Xóa thành công!");
+                fetchUsers(); 
+            } catch (err) {
+                alert("Lỗi khi xóa: " + err.message);
+            }
+        }
+    };
+    const filteredUsers = users.filter(u =>
+        u.userName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
     return (
         <div className="container-fluid py-4" style={{ backgroundColor: '#f8fafc', minHeight: '100vh' }}>
+
             {/* Header Section */}
             <div className="d-flex justify-content-between align-items-center mb-4 px-2">
                 <h2 className="font-weight-bold text-dark m-0">Quản lý Người dùng</h2>
@@ -39,8 +51,12 @@ const UserDashboard = () => {
                     <button className="btn btn-light shadow-sm mr-2 px-4 " style={{ borderRadius: '10px', border: '1px solid #e2e8f0' }}>
                         <span className="mr-1">≡</span> Filter
                     </button>
-                    <button className="btn btn-primary shadow-sm px-4" style={{ borderRadius: '10px', fontWeight: '500' }}>
-                        + Thêm sách
+                    <button
+                        className="btn btn-primary shadow-sm px-4"
+                        style={{ borderRadius: '10px', fontWeight: '500' }}
+                        onClick={() => setView('add-user')}
+                    >
+                        + Thêm người 
                     </button>
                 </div>
             </div>
@@ -58,7 +74,7 @@ const UserDashboard = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map((user) => (
+                            {filteredUsers.map((user) => (
                                 <tr key={user.id} style={{ transition: '0.2s' }}>
                                     <td className="px-4 align-middle">
                                         <img
@@ -82,8 +98,18 @@ const UserDashboard = () => {
                                         </span>
                                     </td>
                                     <td className="align-middle text-center">
-                                        <button className="btn btn-sm btn-outline-primary mr-2">Sửa</button>
-                                        <button className="btn btn-sm btn-outline-danger">Xóa</button>
+                                        <button
+                                            className="btn btn-sm btn-outline-primary mr-2"
+                                            onClick={() => { setUserEditingId(user.id); setView('edit-user'); }}
+                                        >
+                                            Sửa
+                                        </button>
+                                        <button
+                                            className="btn btn-sm btn-outline-danger"
+                                            onClick={() => handleDelete(user.id, user.userName)}
+                                        >
+                                            Xóa
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
